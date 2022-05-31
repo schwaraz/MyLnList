@@ -1,15 +1,15 @@
-package com.ventustium.clientrest;
+package com.ventustium.MyLnList;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
+
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import org.json.*;
 
 public class MainActivity extends AppCompatActivity {
-//    TextView tv1;
     Button button;
     ListView mylv;
 
@@ -28,12 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         mylv =  findViewById(R.id.lv1);
         button = findViewById(R.id.button1);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new HTTPReqTask().execute();
-            }
-        });
+        button.setOnClickListener(view -> new HTTPReqTask().execute());
 
         Log.d("TAG", "Function has generated zero.");
     }
@@ -51,30 +45,30 @@ public class MainActivity extends AppCompatActivity {
                 new InputStreamReader(con.getInputStream())
         );
         String input;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         while ((input=in.readLine())!=null){
             response.append(input);
         }
         in.close();
-        System.out.println("Data : \n" +response.toString());
+        System.out.println("Data : \n" + response);
 
         JSONArray myArray = new JSONArray(response.toString());
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         for (int i=0; i < myArray.length();i++){
             JSONObject arrObj = myArray.getJSONObject(i);
             System.out.println("Title : " + arrObj.getString("title"));
             result.add("Title : " + arrObj.getString("title"));
         }
-        String list[] = result.toArray(new String[0]);
-        return list;
+        return result.toArray(new String[0]);
     }
 
     private void updateInterface(String[] result) {
-        ArrayAdapter<String> aAdapter = new ArrayAdapter<String>(this, R.layout.listview1, R.id.tv1, result);
+        ArrayAdapter<String> aAdapter = new ArrayAdapter<>(this, R.layout.listview1, R.id.tv1, result);
         mylv.setAdapter(aAdapter);
     }
 
-    private class HTTPReqTask extends AsyncTask<String, Void, String[]> { //String pertama do in bacground, string ke tiga, on
+    @SuppressLint("StaticFieldLeak")
+    private class HTTPReqTask extends AsyncTask<String, Void, String[]> { //String pertama do in background, string ke tiga, on
         @Override
         protected String[] doInBackground(String... strings) {
             String[] result = null;
@@ -88,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         @Override
-        protected void onPostExecute(String result[]) {
+        protected void onPostExecute(String[] result) {
             updateInterface(result);
             super.onPostExecute(result);
         }

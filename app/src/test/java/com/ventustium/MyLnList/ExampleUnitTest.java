@@ -1,4 +1,4 @@
-package com.ventustium.clientrest;
+package com.ventustium.MyLnList;
 
 import org.junit.Test;
 
