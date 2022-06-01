@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MyLNList</string>
+    <string name="search">Search</string>
+    <string name="novel_title">NOVEL TITLE</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
