@@ -7,11 +7,11 @@
 
     <TextView
         android:id="@+id/tv1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
-        android:text="Press GET DATA" />
+        android:text="@string/novel_title" />
 
 </LinearLayout>

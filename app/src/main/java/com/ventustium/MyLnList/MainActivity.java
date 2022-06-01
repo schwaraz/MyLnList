@@ -1,11 +1,16 @@
 package com.ventustium.MyLnList;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -17,8 +22,11 @@ import java.util.ArrayList;
 import org.json.*;
 
 public class MainActivity extends AppCompatActivity {
-    Button button;
+    Button bSignIn, bSignUp;
     ListView mylv;
+    ArrayAdapter<String> aAdapter;
+
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +34,44 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mylv =  findViewById(R.id.lv1);
-        button = findViewById(R.id.button1);
-        button.setOnClickListener(view -> new HTTPReqTask().execute());
+        bSignIn = findViewById(R.id.ButtonSignIn);
 
-        Log.d("TAG", "Function has generated zero.");
+        swipeRefreshLayout = findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            new HTTPReqTask().execute();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+        bSignIn.setOnClickListener(view -> {
+
+        });
+
+        new HTTPReqTask().execute();
+        Log.d("TAG123", "Function has generated zero.");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search,menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Type to Search");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                aAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     private String[] getREST() throws Exception{
@@ -57,13 +99,14 @@ public class MainActivity extends AppCompatActivity {
         for (int i=0; i < myArray.length();i++){
             JSONObject arrObj = myArray.getJSONObject(i);
             System.out.println("Title : " + arrObj.getString("title"));
-            result.add("Title : " + arrObj.getString("title"));
+            result.add(arrObj.getString("title"));
         }
+        result.add(" ");
         return result.toArray(new String[0]);
     }
 
     private void updateInterface(String[] result) {
-        ArrayAdapter<String> aAdapter = new ArrayAdapter<>(this, R.layout.listview1, R.id.tv1, result);
+        aAdapter = new ArrayAdapter<>(this, R.layout.listview1, R.id.tv1, result);
         mylv.setAdapter(aAdapter);
     }
 

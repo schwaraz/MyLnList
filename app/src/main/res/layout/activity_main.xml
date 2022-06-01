@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,18 +8,43 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/ButtonSignIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="GET NOVEL LIST" />
+        android:text="@string/sign_in"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ListView
-        android:id="@+id/lv1"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/ButtonSignUp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/design_default_color_primary"
-        android:dividerHeight="2dp"
-        android:listSelector="#00FF00"/>
+        android:text="@string/sign_up"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ButtonSignIn" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ButtonSignUp"
+
+        >
+        <ListView
+            android:id="@+id/lv1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:divider="@color/design_default_color_primary"
+            android:dividerHeight="2dp"
+            android:listSelector="#00FF00"
+            tools:listitem="@layout/listview1"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 <!--    <TextView-->
 <!--        android:id="@+id/textView"-->
@@ -31,4 +56,4 @@
 <!--        app:layout_constraintRight_toRightOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
