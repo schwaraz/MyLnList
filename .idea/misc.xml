@@ -3,13 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Kuliah/Semester 6/PAT/MyLnList/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
+        <entry key="..\:/Kuliah/Semester 6/PAT/MyLnList/app/src/main/res/layout/activity_browseln.xml" value="0.18802083333333333" />
+        <entry key="..\:/Kuliah/Semester 6/PAT/MyLnList/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Kuliah/Semester 6/PAT/MyLnList/app/src/main/res/layout/fragment_account.xml" value="0.33" />
+        <entry key="..\:/Kuliah/Semester 6/PAT/MyLnList/app/src/main/res/layout/fragment_home.xml" value="0.11272727272727273" />
+        <entry key="..\:/Kuliah/Semester 6/PAT/MyLnList/app/src/main/res/layout/fragment_library.xml" value="0.18802083333333333" />
         <entry key="..\:/Kuliah/Semester 6/PAT/MyLnList/app/src/main/res/layout/listview1.xml" value="0.2557291666666667" />
+        <entry key="..\:/Kuliah/Semester 6/PAT/MyLnList/app/src/main/res/menu/buttom_menu.xml" value="0.18802083333333333" />
         <entry key="..\:/Kuliah/Semester 6/PAT/MyLnList/app/src/main/res/menu/search.xml" value="0.18802083333333333" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17_PREVIEW" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

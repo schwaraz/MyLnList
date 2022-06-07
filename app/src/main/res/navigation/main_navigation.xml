@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ventustium.MyLnList.UI.Home"
+        android:label="Browse"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.ventustium.MyLnList.UI.Library"
+        android:label="@string/history"
+        tools:layout="@layout/fragment_library" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.ventustium.MyLnList.UI.Account"
+        android:label="Account"
+        tools:layout="@layout/fragment_account" />
+</navigation>
