@@ -31,8 +31,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.ventustium.MyLnList.R;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -45,8 +48,7 @@ public class Account extends Fragment {
     GoogleSignInClient googleSignInClient;
 //    Profile profile = new Profile();
 
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    Handler handler = new Handler(Looper.getMainLooper());
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,7 @@ public class Account extends Fragment {
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-                if(result.getResultCode() == RESULT_OK){
+                if (result.getResultCode() == RESULT_OK) {
                     Intent data = result.getData();
                     Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                     handlerResult(task);
@@ -107,7 +109,7 @@ public class Account extends Fragment {
     public void onStart() {
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
-        if(account != null){
+        if (account != null) {
             LoggedIn(account);
         }
     }
@@ -126,63 +128,13 @@ public class Account extends Fragment {
         });
     }
 
-    public void LoggedIn(GoogleSignInAccount googleSignInAccount){
+    public void LoggedIn(GoogleSignInAccount googleSignInAccount) {
         Fragment Profile = new Profile();
         Bundle bundle = new Bundle();
         bundle.putString("getDisplayName", googleSignInAccount.getDisplayName());
         bundle.putString("getEmail", googleSignInAccount.getEmail());
+        bundle.putString("getID", googleSignInAccount.getId());
         Profile.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, Profile).commit();
-
-    }
-
-    public void clientPOST(){
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    getSessionID();
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                });
-            }
-        });
-    }
-
-    public void getSessionID() throws Exception{
-        String url = "https://api-mylnlist.ventustium.com/users/";
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestMethod("POST"); //PUT / DELETE
-        con.setRequestProperty("User-Agent", "Mozilla/5.0");
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Accept", "application/json");
-        con.setDoOutput(true);
-        con.setDoInput(true);
-        con.connect();
-        JSONObject jsonParam = new JSONObject();
-        jsonParam.put("username", "kevin");
-        jsonParam.put("password", "value");
-        jsonParam.put("email", "kevinlinuhung@gmail.com");
-
-        System.out.println(jsonParam.toString());
-
-        byte[] jsData = jsonParam.toString().getBytes("UTF-8");
-        OutputStream os = con.getOutputStream();
-        os.write(jsData);
-
-        int responseCode = con.getResponseCode();
-        System.out.println("Send Get Request to : " + url);
-        System.out.println("Response Code : " + responseCode);
-
-        os.flush();
-        os.close();
     }
 }
