@@ -36,6 +36,7 @@ import java.util.concurrent.Executors;
 public class Home extends Fragment {
 
     ListView mylv;
+    View view;
     ArrayAdapter<String> aAdapter;
 
     SwipeRefreshLayout swipeRefreshLayout;
@@ -59,16 +60,19 @@ public class Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
+        mylv = view.findViewById(R.id.lv1);
+        getNovel();
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(this::getNovel);
+
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mylv = view.findViewById(R.id.lv1);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
-        swipeRefreshLayout.setOnRefreshListener(this::getNovel);
-        getNovel();
+
     }
 
     @Override
@@ -109,8 +113,10 @@ public class Home extends Fragment {
 
             String[] finalResult = result;
             handler.post(() -> {
-                aAdapter = new ArrayAdapter<>(getActivity(), R.layout.listview1, R.id.tv1, finalResult);
-                mylv.setAdapter(aAdapter);
+                if(getActivity() != null){
+                    aAdapter = new ArrayAdapter<>(getActivity(), R.layout.listview1, R.id.tv1, finalResult);
+                    mylv.setAdapter(aAdapter);
+                }
             });
         });
     }
@@ -134,13 +140,13 @@ public class Home extends Fragment {
             response.append(input);
         }
         in.close();
-        System.out.println("Data : \n" + response);
+//        System.out.println("Data : \n" + response);
 
         JSONArray myArray = new JSONArray(response.toString());
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < myArray.length(); i++) {
             JSONObject arrObj = myArray.getJSONObject(i);
-            System.out.println("Title : " + arrObj.getString("title"));
+//            System.out.println("Title : " + arrObj.getString("title"));
             result.add(arrObj.getString("title"));
         }
         return result.toArray(new String[0]);
