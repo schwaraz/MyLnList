@@ -52,6 +52,7 @@ public class Account extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        requireActivity().setTitle("Account");
         super.onCreate(savedInstanceState);
     }
 

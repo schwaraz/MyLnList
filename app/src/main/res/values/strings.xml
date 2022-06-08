@@ -15,7 +15,12 @@
     <string name="labelName">Name:</string>
     <string name="stringName">Full Name</string>
     <string name="labelEmail">Email:</string>
-    <string name="fetching_email">fetching email...</string>
+    <string name="fetching_email">fetching email…</string>
     <string name="labelUsername">Username:</string>
     <string name="edit_username">Edit Username</string>
+    <string name="description">Description</string>
+    <string name="please_sign_in_first">Please Sign In First</string>
+    <string name="add_to_my_history">Add to my history</string>
+    <string name="this_ln_is_not_on_your_list">This LN is not on your list</string>
+    <string name="this_is_the_description">This is the Description</string>
 </resources>
