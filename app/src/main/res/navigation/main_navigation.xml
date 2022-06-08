@@ -20,4 +20,9 @@
         android:name="com.ventustium.MyLnList.UI.Account"
         android:label="Account"
         tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.ventustium.MyLnList.UI.Profile"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

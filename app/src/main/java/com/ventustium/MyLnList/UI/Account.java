@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +29,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.ventustium.MyLnList.R;
 
-import java.util.Objects;
-
 
 public class Account extends Fragment {
-
-    GoogleSignInClient gsc;
+    View v;
+    GoogleSignInClient googleSignInClient;
+//    Profile profile = new Profile();
 
 
     @Override
@@ -47,8 +45,14 @@ public class Account extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_account, container, false);
+        v = inflater.inflate(R.layout.fragment_account, container, false);
 
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -64,16 +68,16 @@ public class Account extends Fragment {
                 .requestEmail()
                 .requestId().build();
 
-        gsc = GoogleSignIn.getClient(getActivity().getApplicationContext(), options);
+        googleSignInClient = GoogleSignIn.getClient(getActivity().getApplicationContext(), options);
         SignInButton signInButton = v.findViewById(R.id.signInButton);
         Button buttonLogout = v.findViewById(R.id.signOutButton);
         signInButton.setOnClickListener(view1 -> {
-            Intent intent = gsc.getSignInIntent();
+            Intent intent = googleSignInClient.getSignInIntent();
             launcher.launch(intent);
         });
 
         buttonLogout.setOnClickListener(view1 -> {
-            gsc.signOut().addOnSuccessListener(new OnSuccessListener<Void>() {
+            googleSignInClient.signOut().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
                     Toast.makeText(getContext(), "Sign Out Success", Toast.LENGTH_SHORT).show();
@@ -85,13 +89,6 @@ public class Account extends Fragment {
                 }
             });
         });
-        return v;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Override
@@ -100,6 +97,12 @@ public class Account extends Fragment {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
         if(account != null){
             Toast.makeText(getContext(), account.getDisplayName(), Toast.LENGTH_SHORT).show();
+            Fragment Profile = new Profile();
+            Bundle bundle = new Bundle();
+            bundle.putString("getDisplayName", account.getDisplayName());
+            bundle.putString("getEmail", account.getEmail());
+            Profile.setArguments(bundle);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, Profile).commit();
         }
     }
 
@@ -108,6 +111,8 @@ public class Account extends Fragment {
             @Override
             public void onSuccess(GoogleSignInAccount googleSignInAccount) {
                 Toast.makeText(getContext(), googleSignInAccount.getDisplayName(), Toast.LENGTH_SHORT).show();
+                Fragment Profile = new Profile();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, Profile).commit();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
