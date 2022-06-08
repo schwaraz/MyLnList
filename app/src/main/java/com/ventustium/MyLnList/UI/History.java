@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.ventustium.MyLnList.R;
 
 
@@ -24,6 +26,12 @@ public class History extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_history, container, false);
 
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(requireActivity());
+
+        if (account == null) {
+            Fragment Account = new HistoryAccount();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, Account).commit();
+        }
 
         return view;
     }

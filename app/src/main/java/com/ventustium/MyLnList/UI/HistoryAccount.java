@@ -4,6 +4,11 @@ import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -12,14 +17,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.os.Handler;
-import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,20 +28,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.ventustium.MyLnList.R;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-
-public class Account extends Fragment {
+public class HistoryAccount extends Fragment {
     View v;
     GoogleSignInClient googleSignInClient;
 //    Profile profile = new Profile();
@@ -53,7 +38,7 @@ public class Account extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        requireActivity().setTitle("Account");
+        requireActivity().setTitle("History");
         super.onCreate(savedInstanceState);
     }
 
@@ -61,7 +46,7 @@ public class Account extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        v = inflater.inflate(R.layout.fragment_account, container, false);
+        v = inflater.inflate(R.layout.fragment_history_account, container, false);
 
         return v;
     }
@@ -85,11 +70,12 @@ public class Account extends Fragment {
                 .requestId().build();
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity().getApplicationContext(), options);
-        SignInButton signInButton = v.findViewById(R.id.signInButton);
+        SignInButton signInButton = v.findViewById(R.id.HistorySignInButton);
         signInButton.setOnClickListener(view1 -> {
             Intent intent = googleSignInClient.getSignInIntent();
             launcher.launch(intent);
         });
+
     }
 
     @Override
@@ -116,7 +102,7 @@ public class Account extends Fragment {
     }
 
     public void LoggedIn(GoogleSignInAccount googleSignInAccount) {
-        Fragment Profile = new Profile();
+        Fragment Profile = new History();
         Bundle bundle = new Bundle();
         bundle.putString("getDisplayName", googleSignInAccount.getDisplayName());
         bundle.putString("getEmail", googleSignInAccount.getEmail());
