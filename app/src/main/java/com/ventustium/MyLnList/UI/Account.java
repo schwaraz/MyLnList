@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +31,22 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.ventustium.MyLnList.R;
 
+import org.json.JSONObject;
+
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 public class Account extends Fragment {
     View v;
     GoogleSignInClient googleSignInClient;
 //    Profile profile = new Profile();
 
+    ExecutorService executor = Executors.newSingleThreadExecutor();
+    Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,13 +108,7 @@ public class Account extends Fragment {
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
         if(account != null){
-            Toast.makeText(getContext(), account.getDisplayName(), Toast.LENGTH_SHORT).show();
-            Fragment Profile = new Profile();
-            Bundle bundle = new Bundle();
-            bundle.putString("getDisplayName", account.getDisplayName());
-            bundle.putString("getEmail", account.getEmail());
-            Profile.setArguments(bundle);
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, Profile).commit();
+            LoggedIn(account);
         }
     }
 
@@ -110,9 +116,7 @@ public class Account extends Fragment {
         task.addOnSuccessListener(new OnSuccessListener<GoogleSignInAccount>() {
             @Override
             public void onSuccess(GoogleSignInAccount googleSignInAccount) {
-                Toast.makeText(getContext(), googleSignInAccount.getDisplayName(), Toast.LENGTH_SHORT).show();
-                Fragment Profile = new Profile();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, Profile).commit();
+                LoggedIn(googleSignInAccount);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -120,5 +124,65 @@ public class Account extends Fragment {
                 Toast.makeText(getContext(), "FAILED", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void LoggedIn(GoogleSignInAccount googleSignInAccount){
+        Fragment Profile = new Profile();
+        Bundle bundle = new Bundle();
+        bundle.putString("getDisplayName", googleSignInAccount.getDisplayName());
+        bundle.putString("getEmail", googleSignInAccount.getEmail());
+        Profile.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, Profile).commit();
+
+    }
+
+    public void clientPOST(){
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    getSessionID();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }
+        });
+    }
+
+    public void getSessionID() throws Exception{
+        String url = "https://api-mylnlist.ventustium.com/users/";
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("POST"); //PUT / DELETE
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        con.setDoOutput(true);
+        con.setDoInput(true);
+        con.connect();
+        JSONObject jsonParam = new JSONObject();
+        jsonParam.put("username", "kevin");
+        jsonParam.put("password", "value");
+        jsonParam.put("email", "kevinlinuhung@gmail.com");
+
+        System.out.println(jsonParam.toString());
+
+        byte[] jsData = jsonParam.toString().getBytes("UTF-8");
+        OutputStream os = con.getOutputStream();
+        os.write(jsData);
+
+        int responseCode = con.getResponseCode();
+        System.out.println("Send Get Request to : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        os.flush();
+        os.close();
     }
 }

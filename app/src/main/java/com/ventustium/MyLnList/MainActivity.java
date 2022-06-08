@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
     Library library = new Library();
     Account account = new Account();
 
-    ActivityMainBinding binding;
-
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, account).commit();
                     break;
             }
-            return false;
+            return true;
         });
     }
 }
