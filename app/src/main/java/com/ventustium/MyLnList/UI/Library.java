@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.ventustium.MyLnList.IdTitleModel;
 import com.ventustium.MyLnList.MainActivity;
 import com.ventustium.MyLnList.NovelDetail;
 import com.ventustium.MyLnList.R;
@@ -34,6 +36,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -109,7 +112,7 @@ public class Library extends Fragment {
 
     private void getNovel() {
         executor.execute(() -> {
-            String[] result = null;
+            List<IdTitleModel> result = null;
             try {
                 result = getREST();
                 swipeRefreshLayout.setRefreshing(false);
@@ -117,16 +120,28 @@ public class Library extends Fragment {
                 e.printStackTrace();
             }
 
-            String[] finalResult = result;
+            List<IdTitleModel> finalResult = result;
             handler.post(() -> {
                 if (getActivity() != null) {
-                    aAdapter = new ArrayAdapter<>(getActivity(), R.layout.listview1, R.id.tv1, finalResult);
+                    ArrayList<Integer> id = new ArrayList<>();
+                    ArrayList<String> title = new ArrayList<>();
+                    ArrayList<String> description = new ArrayList<>();
+                    Log.d("finalResult", "Size: "+ finalResult.size());
+                    for(int i = 0; i < finalResult.size(); i++){
+                        id.add(finalResult.get(i).getId());
+                        title.add(finalResult.get(i).getTitle());
+                        description.add(finalResult.get(i).getDescription());
+                    }
+                    LibraryCustomAdapter aAdapter = new LibraryCustomAdapter(getActivity(), id, title);
                     mylv.setAdapter(aAdapter);
                     mylv.setClickable(true);
-                    mylv.setOnItemClickListener((adapterView, view, i, l) -> {
+                    mylv.setOnItemClickListener((adapterView, view1, i, l) -> {
                         Intent intent = new Intent(getContext(), NovelDetail.class);
                         assert finalResult != null;
-                        intent.putExtra("LNTitle", finalResult[i]);
+                        intent.putExtra("LNId", id.get(i));
+                        intent.putExtra("LNTitle", title.get(i));
+                        intent.putExtra("LNDescription", description.get(i));
+                        Log.d("LNTitle1", description.get(i));
                         startActivity(intent);
                     });
                 }
@@ -135,7 +150,7 @@ public class Library extends Fragment {
     }
 
 
-    private String[] getREST() throws Exception {
+    private List<IdTitleModel> getREST() throws Exception {
         String url = "https://api-mylnlist.ventustium.com/lnlist/";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -156,12 +171,15 @@ public class Library extends Fragment {
 //        System.out.println("Data : \n" + response);
 
         JSONArray myArray = new JSONArray(response.toString());
-        ArrayList<String> result = new ArrayList<>();
+        List<IdTitleModel> result = new ArrayList<>();
         for (int i = 0; i < myArray.length(); i++) {
             JSONObject arrObj = myArray.getJSONObject(i);
-//            System.out.println("Title : " + arrObj.getString("title"));
-            result.add(arrObj.getString("title"));
-        }
-        return result.toArray(new String[0]);
+            IdTitleModel u = new IdTitleModel();
+            u.setId(arrObj.getInt("id"));
+            u.setTitle(arrObj.getString("title"));
+            u.setDescription(arrObj.getString("description"));
+            result.add(u);
+            }
+        return result;
     }
 }

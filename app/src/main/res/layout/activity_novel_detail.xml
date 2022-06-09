@@ -26,16 +26,17 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/tvStringDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvStringDescription"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:text="@string/this_is_the_description"
         android:layout_marginStart="10dp"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
