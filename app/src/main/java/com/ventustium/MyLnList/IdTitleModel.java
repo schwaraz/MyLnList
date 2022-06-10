@@ -1,12 +1,13 @@
 package com.ventustium.MyLnList;
 
 public class IdTitleModel {
-    int id;
+    int id, idLN;
     String title;
     String description;
 
-    public IdTitleModel(int id, String title, String description) {
+    public IdTitleModel(int id, int idLN, String title, String description) {
         this.id = id;
+        this.idLN = idLN;
         this.title = title;
         this.description = description;
     }
@@ -21,6 +22,14 @@ public class IdTitleModel {
 
     public IdTitleModel() {
 
+    }
+
+    public int getIdLN() {
+        return idLN;
+    }
+
+    public void setIdLN(int idLN) {
+        this.idLN = idLN;
     }
 
     public int getId() {

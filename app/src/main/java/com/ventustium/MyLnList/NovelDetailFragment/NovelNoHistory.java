@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,9 +34,11 @@ public class NovelNoHistory extends Fragment {
 
     View view;
     Button btnAddHistory;
-    int LNId;
+    String LNId;
     Bundle bundle;
     String notes;
+
+    NovelHistory novelHistory = new NovelHistory();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +55,8 @@ public class NovelNoHistory extends Fragment {
         bundle = this.getArguments();
         assert bundle != null;
         requireActivity().setTitle(bundle.getString("LNTitle"));
-        LNId = bundle.getInt("LNId");
+        LNId = bundle.getString("LNId");
+        Log.d("LNId", (LNId));
         btnAddHistory.setOnClickListener(view1 -> {
             clientPOST();
         });
@@ -74,6 +78,7 @@ public class NovelNoHistory extends Fragment {
                     public void run() {
                         if(Objects.equals(notes, "success")){
                             Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show();
+                            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutDetailNovel, novelHistory).commit();
                         }
                         if(Objects.equals(notes, "INVALID SESSION")){
                             Toast.makeText(requireActivity(), "Please Re Sign In", Toast.LENGTH_SHORT).show();
@@ -103,7 +108,7 @@ public class NovelNoHistory extends Fragment {
         jsonParam.put("status", "PTR");
         jsonParam.put("score", 0);
 
-        byte[] jsData = jsonParam.toString().getBytes("UTF-8");
+        byte[] jsData = jsonParam.toString().getBytes(StandardCharsets.UTF_8);
         OutputStream os = con.getOutputStream();
         os.write(jsData);
 

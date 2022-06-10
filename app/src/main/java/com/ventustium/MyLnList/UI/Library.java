@@ -168,7 +168,7 @@ public class Library extends Fragment {
             response.append(input);
         }
         in.close();
-//        System.out.println("Data : \n" + response);
+//        Log.d("Kevin","LN List : \n" + response);
 
         JSONArray myArray = new JSONArray(response.toString());
         List<IdTitleModel> result = new ArrayList<>();

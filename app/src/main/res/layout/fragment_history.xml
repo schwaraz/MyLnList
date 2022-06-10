@@ -6,13 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".UI.History">
 
-    <TextView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshHistory"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="API not Impemented Yet"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ListView
+            android:id="@+id/lvHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:divider="@color/design_default_color_primary"
+            android:dividerHeight="2dp"
+            android:listSelector="#00FF00"
+            tools:listitem="@layout/listview1" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

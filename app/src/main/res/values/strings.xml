@@ -24,4 +24,5 @@
     <string name="this_ln_is_not_on_your_list">This LN is not on your list</string>
     <string name="this_is_the_description">This is the Description</string>
     <string name="please_sign_in_to_view_your_history">Please Sign In To View Your History</string>
+    <string name="history_available">History Available</string>
 </resources>
