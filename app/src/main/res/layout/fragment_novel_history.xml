@@ -36,27 +36,58 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/chapterLabel"
-        app:layout_constraintEnd_toEndOf="@+id/tvNovelHistoryVolumeLabel"
+        android:text="@string/score"
+        app:layout_constraintEnd_toEndOf="@+id/tvNovelHistoryChapterLabel"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tvNovelHistoryVolumeLabel"
-        app:layout_constraintTop_toBottomOf="@+id/tvNovelHistoryVolumeLabel" />
-
+        app:layout_constraintStart_toStartOf="@+id/tvNovelHistoryChapterLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvNovelHistoryChapterLabel" />
 
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/editTextVolume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
+        android:autofillHints=""
         android:ems="2"
         android:inputType="number"
         android:text="@string/_0"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/tvNovelHistoryVolumeLabel"
         app:layout_constraintStart_toEndOf="@+id/tvNovelHistoryVolumeLabel"
         app:layout_constraintTop_toTopOf="@+id/tvNovelHistoryVolumeLabel"
         app:layout_constraintVertical_bias="0.769"
+        tools:ignore="LabelFor"
+        android:imeOptions="actionDone"/>
+
+    <EditText
+        android:id="@+id/editTextChapter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:autofillHints=""
-        tools:ignore="LabelFor" />
+        android:ems="2"
+        android:inputType="number"
+        android:text="@string/_0"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/editTextVolume"
+        app:layout_constraintStart_toStartOf="@+id/editTextVolume"
+        app:layout_constraintTop_toBottomOf="@+id/editTextVolume"
+        tools:ignore="LabelFor"
+        android:imeOptions="actionDone"/>
+
+    <EditText
+        android:id="@+id/editTextScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:ems="2"
+        android:inputType="number"
+        android:text="@string/_0"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/editTextChapter"
+        app:layout_constraintStart_toStartOf="@+id/editTextChapter"
+        app:layout_constraintTop_toBottomOf="@+id/editTextChapter"
+        tools:ignore="LabelFor"
+        android:imeOptions="actionDone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

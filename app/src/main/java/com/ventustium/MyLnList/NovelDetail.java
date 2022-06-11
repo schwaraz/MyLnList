@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -27,8 +26,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -80,7 +77,7 @@ public class NovelDetail extends AppCompatActivity {
     private void clientPost() {
         executor.execute(() -> {
             try {
-                getUserHistoryNovelDetail();
+                checkNovel();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -98,8 +95,8 @@ public class NovelDetail extends AppCompatActivity {
         });
     }
 
-    private void getUserHistoryNovelDetail() throws Exception, JSONException {
-        String url = "https://api-mylnlist.ventustium.com/get/lnListUser/";
+    private void checkNovel() throws Exception, JSONException {
+        String url = "https://api-mylnlist.ventustium.com/check/lnListUser/";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("POST"); //PUT / DELETE

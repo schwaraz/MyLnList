@@ -28,4 +28,5 @@
     <string name="volumeLabel">Volume:</string>
     <string name="chapterLabel">Chapter:</string>
     <string name="_0">0</string>
+    <string name="score">Score:</string>
 </resources>
