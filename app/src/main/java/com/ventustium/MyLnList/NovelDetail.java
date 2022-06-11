@@ -1,5 +1,6 @@
 package com.ventustium.MyLnList;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -49,6 +51,7 @@ public class NovelDetail extends AppCompatActivity {
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         tvlnDescription = findViewById(R.id.tvStringDescription);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         bundle = new Bundle();
         Intent intent = this.getIntent();
         if (intent != null){
@@ -72,6 +75,14 @@ public class NovelDetail extends AppCompatActivity {
 
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void clientPost() {
