@@ -42,10 +42,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Library extends Fragment {
-
     ListView mylv;
     View view;
-    ArrayAdapter<String> aAdapter;
+    LibraryCustomAdapter aAdapter;
 
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -91,7 +90,6 @@ public class Library extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Title");
         searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().getComponentName()));
 
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
@@ -102,7 +100,10 @@ public class Library extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                aAdapter.getFilter().filter(s);
+                if (aAdapter != null){
+                    Log.d("Search", s);
+                    aAdapter.getFilter().filter(s);
+                }
                 return false;
             }
         };
@@ -122,26 +123,16 @@ public class Library extends Fragment {
 
             List<IdTitleModel> finalResult = result;
             handler.post(() -> {
-                if (getActivity() != null) {
-                    ArrayList<Integer> id = new ArrayList<>();
-                    ArrayList<String> title = new ArrayList<>();
-                    ArrayList<String> description = new ArrayList<>();
-                    Log.d("finalResult", "Size: "+ finalResult.size());
-                    for(int i = 0; i < finalResult.size(); i++){
-                        id.add(finalResult.get(i).getId());
-                        title.add(finalResult.get(i).getTitle());
-                        description.add(finalResult.get(i).getDescription());
-                    }
-                    LibraryCustomAdapter aAdapter = new LibraryCustomAdapter(getActivity(), id, title);
+                if (getActivity() != null && finalResult != null) {
+                    aAdapter = new LibraryCustomAdapter(getActivity(), finalResult);
                     mylv.setAdapter(aAdapter);
+                    mylv.setTextFilterEnabled(true);
                     mylv.setClickable(true);
                     mylv.setOnItemClickListener((adapterView, view1, i, l) -> {
                         Intent intent = new Intent(getContext(), NovelDetail.class);
-                        assert finalResult != null;
-                        intent.putExtra("LNId", id.get(i));
-                        intent.putExtra("LNTitle", title.get(i));
-                        intent.putExtra("LNDescription", description.get(i));
-                        Log.d("LNTitle1", description.get(i));
+                        intent.putExtra("LNId", finalResult.get(i).getId());
+                        intent.putExtra("LNTitle", finalResult.get(i).getTitle());
+                        intent.putExtra("LNDescription", finalResult.get(i).getDescription());
                         startActivity(intent);
                     });
                 }
@@ -168,7 +159,6 @@ public class Library extends Fragment {
             response.append(input);
         }
         in.close();
-//        Log.d("Kevin","LN List : \n" + response);
 
         JSONArray myArray = new JSONArray(response.toString());
         List<IdTitleModel> result = new ArrayList<>();

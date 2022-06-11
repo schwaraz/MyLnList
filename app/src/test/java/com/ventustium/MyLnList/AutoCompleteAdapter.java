@@ -1,29 +1,25 @@
-package com.ventustium.MyLnList.UI;
+package com.ventustium.MyLnList;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.ventustium.MyLnList.IdTitleModel;
-import com.ventustium.MyLnList.R;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
-public class LibraryCustomAdapter extends ArrayAdapter<IdTitleModel>{
+
+
+public class AutoCompleteAdapter extends ArrayAdapter<IdTitleModel> {
     private List<IdTitleModel> novelListFull;
-    public LibraryCustomAdapter(@NonNull Context context, @NonNull List<IdTitleModel> novelList) {
+    public AutoCompleteAdapter(@NonNull Context context, @NonNull List<IdTitleModel> novelList) {
         super(context, 0, novelList);
         novelListFull = new ArrayList<>(novelList);
     }

@@ -57,35 +57,28 @@ public class NovelNoHistory extends Fragment {
         requireActivity().setTitle(bundle.getString("LNTitle"));
         LNId = bundle.getString("LNId");
         Log.d("LNId", (LNId));
-        btnAddHistory.setOnClickListener(view1 -> {
-            clientPOST();
-        });
+        btnAddHistory.setOnClickListener(view1 -> clientPOST());
         return view;
     }
 
     public void clientPOST() {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    getSessionID();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(Objects.equals(notes, "success")){
-                            Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show();
-                            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutDetailNovel, novelHistory).commit();
-                        }
-                        if(Objects.equals(notes, "INVALID SESSION")){
-                            Toast.makeText(requireActivity(), "Please Re Sign In", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        executor.execute(() -> {
+            try {
+                getSessionID();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
+            handler.post(() -> {
+                if(Objects.equals(notes, "success")){
+                    Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show();
+                    novelHistory.setArguments(bundle);
+                    requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutDetailNovel, novelHistory).commit();
+                }
+                if(Objects.equals(notes, "INVALID SESSION")){
+                    Toast.makeText(requireActivity(), "Please Re Sign In", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 
@@ -119,7 +112,7 @@ public class NovelNoHistory extends Fragment {
                 new InputStreamReader(con.getInputStream())
         );
         String input;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         while ((input = in.readLine()) != null) {
             response.append(input);
         }

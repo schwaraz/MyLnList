@@ -25,4 +25,7 @@
     <string name="this_is_the_description">This is the Description</string>
     <string name="please_sign_in_to_view_your_history">Please Sign In To View Your History</string>
     <string name="history_available">History Available</string>
+    <string name="volumeLabel">Volume:</string>
+    <string name="chapterLabel">Chapter:</string>
+    <string name="_0">0</string>
 </resources>
